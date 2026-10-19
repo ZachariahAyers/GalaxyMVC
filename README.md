@@ -11,7 +11,8 @@ Most PHP developers meet MVC through Laravel or Symfony, where routing, controll
 - **Routing with a safety check.** The router turns `/controller/method/params` into a class and method, then uses reflection to confirm the target is a public, non-static action on a `Controller` subclass with the right number of parameters. Anything else is a 404, so helper methods and arbitrary classes can never be called from a URL.
 - **Prepared statements only.** The database class has no way to run a query without binding. Each value is bound with a PDO type taken from its PHP type (`int`, `bool`, `null`, string).
 - **Escaped views.** Templates are plain PHP rendered inside one layout, with output passed through `htmlspecialchars`.
-- **Modern PHP.** PHP 8.4, strict types throughout, typed and readonly properties, PSR-4 autoloading through Composer, PSR-12 style, and a PHPUnit 13 suite.
+- **Checked on every push.** PHP 8.4 with strict types and readonly properties, PSR-4 autoloading through Composer, PSR-12 style enforced by PHP-CS-Fixer, PHPStan at its strictest level (10), and a PHPUnit 13 suite, all run in GitHub Actions.
+- **Ready for Claude Code.** `CLAUDE.md` gives an agent the commands, the request-flow map, the rules and a definition of done; `.claude/settings.json` lets it run the project's own checks without asking.
 
 ## How a request flows
 
@@ -49,7 +50,7 @@ Open http://localhost:8000. PHP's built-in server is for development only. In pr
 
 ### Configuration
 
-Settings come from environment variables, read in `app/config.php`:
+Settings come from environment variables, read by `App\Core\Config`:
 
 | Variable | Default |
 | --- | --- |
@@ -59,32 +60,41 @@ Settings come from environment variables, read in `app/config.php`:
 
 For MySQL, for example: `DB_DSN="mysql:host=localhost;dbname=galaxymvc" DB_USER=app DB_PASSWORD=... composer setup`.
 
-### Tests
+### Checks
 
 ```bash
-composer test
+composer check        # everything CI runs: syntax, style, analyse, test
+composer test         # PHPUnit only
+composer style:fix    # apply PSR-12 fixes
 ```
 
-The suite covers the router (default routes, parameters, decoding, and every path it must refuse) and the database layer (positional and named binding, typed values, row counts, and SQL injection attempts) against an in-memory SQLite database.
+The suite covers the router (default routes, parameters, decoding, and every path it must refuse), the database layer (positional and named binding, typed values, row counts, and SQL injection attempts against an in-memory SQLite database), and the environment configuration.
+
+A longer walk through each step, with the design decisions behind it, is in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Release notes are in [CHANGELOG.md](CHANGELOG.md).
 
 ## Project structure
 
 ```
 GalaxyMVC/
+├── .claude/settings.json   Claude Code permissions for the project's checks
+├── .github/workflows/      CI: validate, lint, style, analyse, test
 ├── app/
-│   ├── Controllers/      Home.php: the actions
-│   ├── Core/             Router, Route, Controller, View, Database
-│   ├── Models/           Post.php
-│   ├── views/            layout.php, home/, errors/
-│   └── config.php        settings from the environment
+│   ├── Controllers/        Home.php: the actions
+│   ├── Core/               Router, Route, Controller, View, Database, Config
+│   ├── Models/             Post.php
+│   └── views/              layout.php, home/, errors/
 ├── database/
-│   └── setup.php         creates and seeds the posts table
-├── public/               web root
+│   └── setup.php           creates and seeds the posts table
+├── docs/ARCHITECTURE.md    the request cycle in detail
+├── public/                 web root
 │   ├── css/style.css
 │   ├── .htaccess
-│   └── index.php         front controller
-├── tests/                PHPUnit suite and a fixture controller
+│   └── index.php           front controller
+├── tests/                  PHPUnit suite and a fixture controller
+├── CLAUDE.md               instructions for Claude Code
 ├── composer.json
+├── phpstan.neon.dist
+├── .php-cs-fixer.dist.php
 └── phpunit.xml.dist
 ```
 
