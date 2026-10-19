@@ -10,7 +10,7 @@ A small PHP 8.4 MVC framework: front controller, reflection-checked router, PDO 
 - `composer test -- --filter RouterTest`: one test class or method.
 - `composer style:fix`: apply PSR-12 fixes. Run it before `composer style` rather than hand-formatting.
 - `php -S localhost:8000 -t public public/index.php`: dev server; it runs until stopped, so start it in the background.
-- Workflows: `ci.yml` runs the checks; `demo.yml` builds the image and redeploys ayers.repair/opensource/galaxymvc/ on a push to `master`.
+- Workflows: `ci.yml` runs the checks. After they pass on a push to `master`, its `demo` job builds the image and redeploys ayers.repair/opensource/galaxymvc/.
 
 ## Where things live
 
@@ -20,7 +20,7 @@ A small PHP 8.4 MVC framework: front controller, reflection-checked router, PDO 
 - `app/Core/View.php`: renders `app/views/<name>.php` inside `app/views/layout.php`.
 - `app/Core/Config.php`: environment settings (`DB_DSN`, `DB_USER`, `DB_PASSWORD`).
 - `app/Core/BasePath.php`: `BASE_PATH`, stripped before routing and put in front of every link in the views (`$base`).
-- `Dockerfile`: the demo image, `php -S` on 8080 with the database on `/data`.
+- `Dockerfile`: the demo image, `php -S` on 8080 with the database on `/data`. `docker/expose-php.ini` turns `expose_php` off.
 - `app/Controllers/`, `app/Models/`: application code. `tests/`: PHPUnit; `tests/Fixtures/` holds test-only controllers.
 
 ## Rules
