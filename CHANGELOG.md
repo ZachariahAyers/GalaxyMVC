@@ -7,7 +7,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 ### Added
 
 - `BASE_PATH` serves the app under a path prefix, and views prefix their links with it.
-- A `Dockerfile` and a `demo` workflow that publishes the live demo at ayers.repair/opensource/galaxymvc/.
+- A `Dockerfile` and a `demo` job in `ci.yml` that publishes the live demo at ayers.repair/opensource/galaxymvc/ once the checks pass.
+
+### Security
+
+- The demo image sets `expose_php = Off`, so responses no longer carry `X-Powered-By`.
 
 ## [2.0.0] - 2026-10-19
 

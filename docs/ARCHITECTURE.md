@@ -69,7 +69,7 @@ Every call is `PDO::prepare` followed by `bindValue` for each parameter, typed f
 
 ## Deployment
 
-The `Dockerfile` runs `php -S` on port 8080 as `www-data`, with the SQLite database at `/data/galaxy.sqlite` on a volume; `php database/setup.php` seeds a new one. `BASE_PATH` serves the app under a prefix: `View::render` passes it to every template as `$base`, and the templates put it in front of their links and the stylesheet. The `demo` workflow builds the image and redeploys it to [ayers.repair/opensource/galaxymvc](https://ayers.repair/opensource/galaxymvc/).
+The `Dockerfile` runs `php -S` on port 8080 as `www-data`, with `expose_php` off (`docker/expose-php.ini`) and the SQLite database at `/data/galaxy.sqlite` on a volume; `php database/setup.php` seeds a new one. `BASE_PATH` serves the app under a prefix: `View::render` passes it to every template as `$base`, and the templates put it in front of their links and the stylesheet. The `demo` job in `ci.yml` builds the image, after the checks pass, and redeploys it to [ayers.repair/opensource/galaxymvc](https://ayers.repair/opensource/galaxymvc/).
 
 ## Quality gates
 
