@@ -16,8 +16,8 @@ HTTP response
 
 Apache (`public/.htaccess`), nginx `try_files`, or `php -S ... public/index.php` send every request that is not a real file here. The script:
 
-1. Takes the path from `REQUEST_URI`, without the query string.
-2. Under `php -S`, returns `false` for files that exist inside `public/` so the server sends them as-is. `realpath` keeps that check inside `public/`.
+1. Takes the path from `REQUEST_URI`, without the query string, and strips `BASE_PATH` from it (`app/Core/BasePath.php`). A path outside the base path is a 404.
+2. Under `php -S`, files that exist inside `public/` are sent as files: at the root by returning `false` so the server sends them as-is, under a base path by the script itself, since the server looks for them only at the root; it sends only stylesheets, never PHP source or `.htaccess`. `realpath` keeps that check inside `public/`.
 3. Asks the router for a route. `null` becomes a 404 rendered with `app/views/errors/404.php`.
 4. Builds the controller with a `Database` from `Config::fromEnvironment()`, calls the action, and requires a string back.
 
@@ -66,6 +66,10 @@ Every call is `PDO::prepare` followed by `bindValue` for each parameter, typed f
 ## 5. Views: `app/Core/View.php`, `app/views`
 
 `View::render($name, $data)` extracts `$data` into local variables, renders `app/views/$name.php` into `$content`, and renders `app/views/layout.php` around it. Templates escape output with `htmlspecialchars`. Styling is in `public/css/style.css`; templates carry no inline CSS or scripts.
+
+## Deployment
+
+The `Dockerfile` runs `php -S` on port 8080 as `www-data`, with the SQLite database at `/data/galaxy.sqlite` on a volume; `php database/setup.php` seeds a new one. `BASE_PATH` serves the app under a prefix: `View::render` passes it to every template as `$base`, and the templates put it in front of their links and the stylesheet. The `demo` workflow builds the image and redeploys it to [ayers.repair/opensource/galaxymvc](https://ayers.repair/opensource/galaxymvc/).
 
 ## Quality gates
 

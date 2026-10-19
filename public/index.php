@@ -2,26 +2,38 @@
 
 declare(strict_types=1);
 
+use App\Core\BasePath;
 use App\Core\Config;
 use App\Core\Database;
 use App\Core\Router;
 use App\Core\View;
 
+require dirname(__DIR__) . '/vendor/autoload.php';
+
 $uri = $_SERVER['REQUEST_URI'] ?? '/';
 $path = is_string($uri) ? parse_url($uri, PHP_URL_PATH) : null;
-$path = is_string($path) ? $path : '/';
+$base = BasePath::fromEnvironment();
+$path = $base->strip(is_string($path) ? $path : '/');
 
-// Under `php -S`, hand existing files in public/ back to the server.
-if (PHP_SAPI === 'cli-server') {
+// Under `php -S`, existing files in public/ are served as files. The server finds them only at the
+// root, so under a base path this script sends them itself, and only the types listed here: never
+// PHP source or .htaccess.
+if (PHP_SAPI === 'cli-server' && $path !== null) {
     $file = realpath(__DIR__ . $path);
     if ($file !== false && str_starts_with($file, __DIR__ . DIRECTORY_SEPARATOR) && is_file($file)) {
-        return false;
+        if ($base->prefix === '') {
+            return false;
+        }
+        $type = ['css' => 'text/css; charset=UTF-8'][pathinfo($file, PATHINFO_EXTENSION)] ?? null;
+        if ($type !== null) {
+            header("Content-Type: {$type}");
+            readfile($file);
+            return;
+        }
     }
 }
 
-require dirname(__DIR__) . '/vendor/autoload.php';
-
-$route = (new Router())->resolve($path);
+$route = $path === null ? null : (new Router())->resolve($path);
 
 if ($route === null) {
     http_response_code(404);

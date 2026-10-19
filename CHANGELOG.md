@@ -2,6 +2,13 @@
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- `BASE_PATH` serves the app under a path prefix, and views prefix their links with it.
+- A `Dockerfile` and a `demo` workflow that publishes the live demo at ayers.repair/opensource/galaxymvc/.
+
 ## [2.0.0] - 2026-10-19
 
 A rebuild of the framework on current PHP. The purpose and the request cycle are unchanged; every file was rewritten.

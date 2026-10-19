@@ -4,6 +4,8 @@
 
 A small PHP MVC framework with a front controller, a URL router, a PDO data layer and plain PHP views.
 
+Live demo: [ayers.repair/opensource/galaxymvc](https://ayers.repair/opensource/galaxymvc/).
+
 ## Features
 
 - Routes `/controller/method/params` URLs to controller actions, and returns a 404 for anything that is not a public action

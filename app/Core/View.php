@@ -19,6 +19,8 @@ final class View
      */
     public static function render(string $view, array $data = []): string
     {
+        // Every template gets the base path to put in front of its links.
+        $data += ['base' => BasePath::fromEnvironment()->prefix];
         $content = self::capture($view, $data);
 
         return self::capture('layout', ['content' => $content] + $data);
