@@ -15,7 +15,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [2.0.0] - 2026-10-19
 
-A rebuild of the framework on current PHP. The purpose and the request cycle are unchanged; every file was rewritten.
+Built on current PHP.
 
 ### Added
 
@@ -31,8 +31,8 @@ A rebuild of the framework on current PHP. The purpose and the request cycle are
 ### Changed
 
 - Requires PHP 8.4. Every file uses strict types and typed, readonly properties.
-- `Database` is a real PDO wrapper again (`select`, `first`, `execute`), with every value bound by type. v1 had replaced it with an in-memory mock.
-- Routing reads `REQUEST_URI`, so it works under Apache, nginx and `php -S` alike. v1 read `$_GET['url']`, which only the Apache rewrite set.
+- `Database` is a real PDO wrapper (`select`, `first`, `execute`), with every value bound by type.
+- Routing reads `REQUEST_URI`, so it works under Apache, nginx and `php -S` alike.
 - Unknown controllers or methods return 404 instead of silently showing the home page.
 - Route parameters are passed as separate arguments and URL-decoded.
 - Views escape all output and no longer use emoji or inline styles; the stylesheet uses colour tokens with a dark theme.
@@ -44,9 +44,4 @@ A rebuild of the framework on current PHP. The purpose and the request cycle are
 - The mock database, its sample code posts and its seeded admin account.
 - The empty JavaScript file, the empty Dependabot config, and the hard-coded `RewriteBase`.
 
-## [1.0.0] - 2025-10-05
-
-The original framework, tagged `v1`: a `Core` router reading `$_GET['url']`, a base `Controller` that loaded models and views by file path, a PDO `Database` class later replaced by an in-memory mock, and header and footer view includes.
-
-[2.0.0]: https://github.com/ZachariahAyers/GalaxyMVC/compare/v1...v2.0.0
-[1.0.0]: https://github.com/ZachariahAyers/GalaxyMVC/releases/tag/v1
+[2.0.0]: https://github.com/ZachariahAyers/GalaxyMVC/tree/v2.0.0
