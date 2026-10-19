@@ -1,9 +1,8 @@
-# Rewrite routes to route all traffic through index.php
+# Send every request that is not a real file or directory to the front controller.
 <IfModule mod_rewrite.c>
-    Options -Multiviews
+    Options -MultiViews
     RewriteEngine On
-    RewriteBase /php.mvc.framework/public
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+    RewriteRule ^ index.php [QSA,L]
 </IfModule>
