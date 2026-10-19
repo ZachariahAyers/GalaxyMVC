@@ -1,5 +1,8 @@
 /vendor/
 /var/
 /.phpunit.cache/
+/.php-cs-fixer.cache
+/.claude/settings.local.json
+/CLAUDE.local.md
 .idea/
 .DS_Store

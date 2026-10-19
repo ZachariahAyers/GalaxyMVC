@@ -10,10 +10,12 @@
         }
     ],
     "require": {
-        "php": ">=8.4",
+        "php": "^8.4",
         "ext-pdo": "*"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "phpstan/phpstan": "^2.3",
         "phpunit/phpunit": "^13.4"
     },
     "autoload": {
@@ -28,7 +30,26 @@
     },
     "scripts": {
         "setup": "@php database/setup.php",
-        "test": "phpunit"
+        "syntax": "find app database public tests .php-cs-fixer.dist.php -name '*.php' -print0 | xargs -0 -n1 php -l",
+        "style": "php-cs-fixer check --diff",
+        "style:fix": "php-cs-fixer fix",
+        "analyse": "phpstan analyse --no-progress",
+        "test": "phpunit",
+        "check": [
+            "@syntax",
+            "@style",
+            "@analyse",
+            "@test"
+        ]
+    },
+    "scripts-descriptions": {
+        "setup": "Create and seed the database named by DB_DSN.",
+        "syntax": "Lint every PHP file with php -l.",
+        "style": "Report PSR-12 violations without changing files.",
+        "style:fix": "Fix PSR-12 violations in place.",
+        "analyse": "Run PHPStan at level 10.",
+        "test": "Run the PHPUnit suite.",
+        "check": "Run every check CI runs."
     },
     "config": {
         "sort-packages": true

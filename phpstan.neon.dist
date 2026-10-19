@@ -1,0 +1,10 @@
+parameters:
+    level: 10
+    paths:
+        - app
+        - database
+        - public
+        - tests
+    excludePaths:
+        # Templates read variables that View::render() extracts at runtime.
+        - app/views
