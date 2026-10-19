@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use App\Core\Config;
 use App\Core\Database;
 use App\Models\Post;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -19,7 +20,7 @@ final class DatabaseTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->db = Database::connect('sqlite::memory:');
+        $this->db = Database::connect(new Config('sqlite::memory:'));
         $this->db->execute(
             'CREATE TABLE posts (id INTEGER PRIMARY KEY, title TEXT NOT NULL, content TEXT, published INTEGER)',
         );

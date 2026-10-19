@@ -22,12 +22,9 @@ final class Database
         $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     }
 
-    public static function connect(
-        string $dsn,
-        ?string $user = null,
-        #[\SensitiveParameter] ?string $password = null,
-    ): self {
-        return new self(new PDO($dsn, $user, $password));
+    public static function connect(Config $config): self
+    {
+        return new self(new PDO($config->dsn, $config->user, $config->password));
     }
 
     /**
@@ -36,7 +33,10 @@ final class Database
      */
     public function select(string $sql, array $params = []): array
     {
-        return $this->run($sql, $params)->fetchAll();
+        /** @var list<array<string, mixed>> $rows FETCH_ASSOC rows */
+        $rows = $this->run($sql, $params)->fetchAll();
+
+        return $rows;
     }
 
     /**
@@ -45,6 +45,7 @@ final class Database
      */
     public function first(string $sql, array $params = []): ?array
     {
+        /** @var array<string, mixed>|false $row FETCH_ASSOC row, or false when there is none */
         $row = $this->run($sql, $params)->fetch();
 
         return $row === false ? null : $row;
@@ -68,13 +69,14 @@ final class Database
         $statement = $this->pdo->prepare($sql);
 
         foreach ($params as $key => $value) {
-            // "?" placeholders are 1-indexed.
-            $statement->bindValue(is_int($key) ? $key + 1 : $key, $value, match (true) {
+            $type = match (true) {
                 is_int($value) => PDO::PARAM_INT,
                 is_bool($value) => PDO::PARAM_BOOL,
                 $value === null => PDO::PARAM_NULL,
                 default => PDO::PARAM_STR,
-            });
+            };
+            // "?" placeholders are 1-indexed.
+            $statement->bindValue(is_int($key) ? $key + 1 : $key, $value, $type);
         }
 
         $statement->execute();

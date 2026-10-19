@@ -41,7 +41,8 @@ final class Router
         }
 
         $class = $this->controllerNamespace . ucfirst($name);
-        if (!class_exists($class) || !is_subclass_of($class, Controller::class)) {
+        // is_subclass_of() autoloads the class name; the segment pattern keeps that name safe.
+        if (!is_subclass_of($class, Controller::class)) {
             return null;
         }
 

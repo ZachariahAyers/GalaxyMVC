@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
+use App\Core\Config;
 use App\Core\Database;
 use App\Core\Router;
 use App\Core\View;
 
-$path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+$uri = $_SERVER['REQUEST_URI'] ?? '/';
+$path = is_string($uri) ? parse_url($uri, PHP_URL_PATH) : null;
 $path = is_string($path) ? $path : '/';
 
 // Under `php -S`, hand existing files in public/ back to the server.
@@ -27,8 +29,11 @@ if ($route === null) {
     return;
 }
 
-$config = require dirname(__DIR__) . '/app/config.php';
-$db = Database::connect($config['db']['dsn'], $config['db']['user'], $config['db']['password']);
+$controller = new ($route->controller)(Database::connect(Config::fromEnvironment()));
+$response = $controller->{$route->method}(...$route->params);
 
-$controller = new ($route->controller)($db);
-echo $controller->{$route->method}(...$route->params);
+if (!is_string($response)) {
+    throw new LogicException("{$route->controller}::{$route->method}() must return a string.");
+}
+
+echo $response;

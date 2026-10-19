@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use App\Controllers\Home;
+use App\Core\Controller;
 use App\Core\Route;
 use App\Core\Router;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -17,7 +18,7 @@ use Tests\Fixtures\Greeter;
 final class RouterTest extends TestCase
 {
     /**
-     * @return iterable<string, array{string, string, string}>
+     * @return iterable<string, array{string, class-string<Controller>, string}>
      */
     public static function appRoutes(): iterable
     {
@@ -27,6 +28,9 @@ final class RouterTest extends TestCase
         yield 'trailing and doubled slashes are ignored' => ['//home//about/', Home::class, 'about'];
     }
 
+    /**
+     * @param class-string<Controller> $controller
+     */
     #[DataProvider('appRoutes')]
     public function testResolvesApplicationRoutes(string $path, string $controller, string $method): void
     {
