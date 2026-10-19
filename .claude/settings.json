@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(composer install *)",
+      "Bash(composer validate *)",
+      "Bash(composer setup *)",
+      "Bash(composer syntax *)",
+      "Bash(composer style *)",
+      "Bash(composer style:fix *)",
+      "Bash(composer analyse *)",
+      "Bash(composer test *)",
+      "Bash(composer check *)",
+      "Bash(php -l *)",
+      "Bash(vendor/bin/phpunit *)",
+      "Bash(vendor/bin/phpstan analyse *)",
+      "Bash(vendor/bin/php-cs-fixer check *)",
+      "Bash(vendor/bin/php-cs-fixer fix *)"
+    ]
+  }
+}
