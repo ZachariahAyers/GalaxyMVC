@@ -78,6 +78,7 @@ code {
 }
 
 .hero {
+    position: relative;
     background: linear-gradient(135deg, var(--hero-from), var(--hero-to));
     color: var(--on-hero);
     padding: 72px 0;
@@ -198,14 +199,16 @@ code {
 }
 
 .patch-seal {
+    position: absolute;
+    top: 16px;
+    right: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 116px;
-    height: 116px;
-    margin: 28px auto 0;
-    padding: 12px;
-    border: 6px double #55370d;
+    width: 80px;
+    height: 80px;
+    padding: 6px;
+    border: 4px double #55370d;
     border-radius: 50%;
     outline: 2px dashed #f1d29a;
     outline-offset: 5px;
@@ -217,12 +220,12 @@ code {
 }
 
 .patch-seal span {
-    font-size: 0.75rem;
+    font-size: 0.625rem;
     line-height: 1.5;
 }
 
 .patch-seal strong {
-    font-size: 1rem;
+    font-size: 0.75rem;
     line-height: 1.8;
     text-transform: uppercase;
     letter-spacing: 0.02em;
@@ -235,4 +238,10 @@ code {
 .patch-seal:focus-visible {
     outline: 3px solid #ffffff;
     outline-offset: 6px;
+}
+
+@media (max-width: 640px) {
+    .hero {
+        padding-top: 112px;
+    }
 }

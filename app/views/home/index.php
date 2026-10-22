@@ -11,7 +11,6 @@
         <a class="patch-seal" href="https://www.php.net/archive/2026.php#2026-10-21-5" aria-label="PHP2Shell patched: PHP security advisory">
             <span>PHP2Shell</span>
             <strong>Patched</strong>
-            <span>21 Oct 2026</span>
         </a>
     </div>
 </section>
