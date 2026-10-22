@@ -13,7 +13,7 @@ COPY --from=vendor /app/vendor vendor
 COPY app app
 COPY database database
 COPY public public
-# Drops the X-Powered-By header; the image reads extra settings from conf.d.
+# Keeps PHP identity and error diagnostics out of public responses.
 COPY docker/expose-php.ini /usr/local/etc/php/conf.d/expose-php.ini
 # The database lives on a volume mounted here; a new volume takes this owner.
 RUN mkdir /data && chown www-data:www-data /data

@@ -85,7 +85,7 @@ jobs:
           IMAGE: ghcr.io/zachariahayers/galaxymvc@${{ steps.push.outputs.digest }}
         run: |
           docker run --rm --network none --entrypoint php "$IMAGE" \
-            -r 'echo "PHP ", PHP_VERSION, "\n"; exit(PHP_VERSION_ID === 80427 ? 0 : 1);'
+            -r 'echo "PHP ", PHP_VERSION, "\n"; exit(PHP_VERSION_ID === 80427 && !filter_var(ini_get("display_errors"), FILTER_VALIDATE_BOOLEAN) && filter_var(ini_get("log_errors"), FILTER_VALIDATE_BOOLEAN) ? 0 : 1);'
 
       - uses: aws-actions/configure-aws-credentials@v6
         with:

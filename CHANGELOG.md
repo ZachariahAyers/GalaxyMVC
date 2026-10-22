@@ -4,12 +4,18 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+### Changed
+
+- Rebuild the demo as a PHP field guide with an editorial masthead, responsive layouts, shared navigation/footer, a practical guide and a styled 404. Native source disclosures show the actual controller, model and post template alongside live database output. Keep the compact top-right PHP2Shell seal.
+
 ### Added
 
 - `BASE_PATH` serves the app under a path prefix, and views prefix their links with it.
 - A `Dockerfile` and a `demo` job in `ci.yml` that publishes the live demo at ayers.repair/opensource/galaxymvc/ once the checks pass.
 
 ### Security
+
+- Keep PHP error diagnostics in the demo server log instead of public responses, and verify those settings before deployment.
 
 - Require PHP 8.4.27 or 8.5.12 and later patch releases in those branches for the PHP2Shell fixes (CVE-2026-109618 and CVE-2026-109619). Pin and verify the demo runtime before deployment; link its patch seal to the PHP advisory.
 

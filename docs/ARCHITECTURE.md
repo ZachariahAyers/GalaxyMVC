@@ -67,6 +67,8 @@ Every call is `PDO::prepare` followed by `bindValue` for each parameter, typed f
 
 `View::render($name, $data)` extracts `$data` into local variables, renders `app/views/$name.php` into `$content`, and renders `app/views/layout.php` around it. Templates escape output with `htmlspecialchars`. Styling is in `public/css/style.css`; templates carry no inline CSS or scripts.
 
+The demo homepage includes `home/posts.php` for its live database output. `Home::source()` reads only three fixed public demo files (controller, model, post template) and passes their text to the view. Native `<details>` disclosures display that text after HTML escaping; no request input selects a file, the displayed source text is never evaluated, and the private source reader is not a routable action. The guide stays at `/home/about`. All pages use the same CSS and shell, with no client JavaScript or remote fonts.
+
 ## Deployment
 
 The `Dockerfile` pins PHP 8.4.27 and checks the runtime version during the build. It runs `php -S` on port 8080 as `www-data`, with `expose_php` off (`docker/expose-php.ini`) and the SQLite database at `/data/galaxy.sqlite` on a volume; `php database/setup.php` seeds a new one. `BASE_PATH` serves the app under a prefix: `View::render` passes it to every template as `$base`, and the templates put it in front of their links and the stylesheet. The `demo` job in `ci.yml` builds the image, after the checks pass, and redeploys it to [ayers.repair/opensource/galaxymvc](https://ayers.repair/opensource/galaxymvc/).
@@ -82,4 +84,4 @@ The `Dockerfile` pins PHP 8.4.27 and checks the runtime version during the build
 
 CI (`.github/workflows/ci.yml`) runs the same steps on PHP 8.4.27 and 8.5.12 after `composer validate --strict`. Templates in `app/views` are skipped by the fixer and by PHPStan because they read variables that `View` extracts at runtime.
 
-The demo workflow verifies PHP 8.4.27 in the published container before deploying its immutable digest. The PHP2Shell seal links to the engine advisory and refers to those fixes only. Composer requires patched releases in both supported branches; an external host must also update PHP and restart its workers.
+The demo workflow verifies PHP 8.4.27 and production error settings in the published container before deploying its immutable digest. The image logs diagnostics with `log_errors=On` and keeps them out of HTTP responses with `display_errors=Off`. The PHP2Shell seal links to the engine advisory and refers to those fixes only. Composer requires patched releases in both supported branches; an external host must also update PHP and restart its workers.

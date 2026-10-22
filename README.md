@@ -6,6 +6,8 @@ A small PHP MVC framework with a front controller, a URL router, a PDO data laye
 
 Live demo: [ayers.repair/opensource/galaxymvc](https://ayers.repair/opensource/galaxymvc/).
 
+The demo renders real SQLite records. Expand its source disclosures to read the actual controller, model, and post template used by the running application. Its guide covers local setup, routing, parameterized queries, templates, and checks. The site uses PHP templates and CSS with no browser JavaScript or remote fonts.
+
 ## Features
 
 - Routes `/controller/method/params` URLs to controller actions, and returns a 404 for anything that is not a public action
