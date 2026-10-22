@@ -6,8 +6,9 @@ COPY app app
 RUN composer dump-autoload --no-dev --classmap-authoritative
 
 # PHP's built-in server: one process, enough for a small demo behind a CDN.
-FROM php:8.4-cli-alpine
+FROM php:8.4.27-cli-alpine
 WORKDIR /app
+RUN php -r 'echo "PHP ", PHP_VERSION, "\n"; exit(PHP_VERSION_ID === 80427 ? 0 : 1);'
 COPY --from=vendor /app/vendor vendor
 COPY app app
 COPY database database

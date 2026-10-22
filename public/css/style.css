@@ -196,3 +196,43 @@ code {
         font-size: 2.5rem;
     }
 }
+
+.patch-seal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 116px;
+    height: 116px;
+    margin: 28px auto 0;
+    padding: 12px;
+    border: 6px double #55370d;
+    border-radius: 50%;
+    outline: 2px dashed #f1d29a;
+    outline-offset: 5px;
+    background: #f1d29a;
+    color: #55370d;
+    font-family: Georgia, serif;
+    text-decoration: none;
+    transform: rotate(8deg);
+}
+
+.patch-seal span {
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
+.patch-seal strong {
+    font-size: 1rem;
+    line-height: 1.8;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.patch-seal:hover {
+    background: #ffe2ac;
+}
+
+.patch-seal:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 6px;
+}

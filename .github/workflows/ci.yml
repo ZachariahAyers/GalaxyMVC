@@ -10,6 +10,9 @@ permissions:
 
 jobs:
   check:
+    strategy:
+      matrix:
+        php: ['8.4.27', '8.5.12']
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
@@ -18,7 +21,7 @@ jobs:
 
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
+          php-version: ${{ matrix.php }}
           extensions: pdo_sqlite
           coverage: none
           tools: composer:v2
@@ -72,9 +75,17 @@ jobs:
           context: .
           platforms: linux/arm64
           push: true
+          pull: true
           tags: ghcr.io/zachariahayers/galaxymvc:latest
           # Links the package to the repo; the demo instance prunes old images by this label.
           labels: org.opencontainers.image.source=https://github.com/ZachariahAyers/GalaxyMVC
+
+      - name: Verify the published PHP runtime
+        env:
+          IMAGE: ghcr.io/zachariahayers/galaxymvc@${{ steps.push.outputs.digest }}
+        run: |
+          docker run --rm --network none --entrypoint php "$IMAGE" \
+            -r 'echo "PHP ", PHP_VERSION, "\n"; exit(PHP_VERSION_ID === 80427 ? 0 : 1);'
 
       - uses: aws-actions/configure-aws-credentials@v6
         with:

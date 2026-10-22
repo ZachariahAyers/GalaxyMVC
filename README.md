@@ -16,11 +16,11 @@ Live demo: [ayers.repair/opensource/galaxymvc](https://ayers.repair/opensource/g
 
 ## Tech stack
 
-PHP 8.4, PDO, Composer, PHPUnit, PHPStan, PHP-CS-Fixer.
+PHP 8.4.27 or 8.5.12 and later patched releases in those branches, PDO, Composer, PHPUnit, PHPStan, PHP-CS-Fixer.
 
 ## Getting started
 
-Requires PHP 8.4 or newer with `pdo_sqlite` (or another PDO driver), and Composer.
+Requires PHP 8.4.27+ or 8.5.12+ within those branches, with `pdo_sqlite` (or another PDO driver), and Composer.
 
 ```bash
 git clone https://github.com/ZachariahAyers/GalaxyMVC.git
@@ -31,6 +31,17 @@ php -S localhost:8000 -t public public/index.php
 ```
 
 Open http://localhost:8000. Set `DB_DSN`, `DB_USER` and `DB_PASSWORD` to use another database.
+
+## PHP security
+
+The demo uses PHP 8.4.27, which includes the fixes for
+[CVE-2026-109618 and CVE-2026-109619 (PHP2Shell)](https://www.php.net/archive/2026.php#2026-10-21-5).
+Composer rejects older releases in both supported PHP branches. CI checks both patched minimum
+versions and verifies the published container's PHP version before deploying its immutable digest.
+
+These are PHP engine vulnerabilities, so upgrading framework code alone does not fix an older
+server runtime. Update PHP and restart all workers when deploying outside the supplied image.
+The demo's seal refers only to these two fixes, not a general security certification.
 
 ## Development
 

@@ -8,6 +8,11 @@
         <h1 class="hero-title">GalaxyMVC</h1>
         <p class="hero-subtitle">A small PHP MVC framework built from scratch</p>
         <p class="hero-description">A front controller, a URL router, a PDO data layer and plain PHP views, small enough to read in one sitting.</p>
+        <a class="patch-seal" href="https://www.php.net/archive/2026.php#2026-10-21-5" aria-label="PHP2Shell patched: PHP security advisory">
+            <span>PHP2Shell</span>
+            <strong>Patched</strong>
+            <span>21 Oct 2026</span>
+        </a>
     </div>
 </section>
 

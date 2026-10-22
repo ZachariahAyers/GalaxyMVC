@@ -11,6 +11,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Security
 
+- Require PHP 8.4.27 or 8.5.12 and later patch releases in those branches for the PHP2Shell fixes (CVE-2026-109618 and CVE-2026-109619). Pin and verify the demo runtime before deployment; link its patch seal to the PHP advisory.
+
 - The demo image sets `expose_php = Off`, so responses no longer carry `X-Powered-By`.
 
 ## [2.0.0] - 2026-10-19
